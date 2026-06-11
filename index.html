@@ -3,332 +3,485 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>财经日报 · 五大赛道销售运营洞察</title>
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<title>金融广告销售 &amp; 运营洞察日报</title>
 <style>
   :root {
-    --bg: #0b1220;
-    --bg2: #121a2e;
-    --card: #162038;
-    --card2: #1c2846;
-    --line: #1f2b45;
-    --txt: #e8eefc;
-    --muted: #8a9bc4;
-    --acc: #5b8cff;
-    --acc2: #ffb84d;
-    --ok: #48bb78;
-    --warn: #ed8936;
-    --danger: #e53e3e;
+    --bg: #0f172a;
+    --bg-2: #111827;
+    --panel: #ffffff;
+    --panel-2: #f8fafc;
+    --border: #e2e8f0;
+    --brand: #2563eb;
+    --brand-2: #1e40af;
+    --accent: #0ea5e9;
+    --success: #16a34a;
+    --warn: #d97706;
+    --danger: #dc2626;
+    --text: #1f2937;
+    --text-2: #475569;
+    --text-3: #64748b;
+    --shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 8px 24px rgba(15, 23, 42, .08);
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    background: linear-gradient(180deg, var(--bg), var(--bg2));
-    color: var(--txt);
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 40%, #ffffff 100%);
+    color: var(--text);
+    line-height: 1.6;
     min-height: 100vh;
   }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 24px 20px 60px; }
-  header {
-    display: flex; align-items: baseline; justify-content: space-between;
-    margin-bottom: 18px;
-  }
-  header h1 {
-    font-size: 22px; margin: 0; letter-spacing: 1px;
-  }
-  header .meta { font-size: 12px; color: var(--muted); }
-
-  /* 整体洞察卡 */
-  .insight-overall {
-    background: var(--card); border: 1px solid var(--line);
-    border-radius: 14px; padding: 18px 22px; margin-bottom: 18px;
-  }
-  .insight-overall .lbl { font-size: 12px; color: var(--acc2); font-weight: 700;
-    letter-spacing: 1px; margin-bottom: 8px; }
-  .insight-overall p { font-size: 15px; line-height: 1.75; color: var(--txt); margin: 0;}
-  .themes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-  .themes span {
-    background: var(--card2); color: var(--acc); padding: 4px 10px;
-    border-radius: 999px; font-size: 12px;
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px 80px;
   }
 
-  /* 概览卡 */
-  .grid-stats {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-    margin-bottom: 18px;
+  /* 顶部 Hero */
+  .hero {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 55%, #0ea5e9 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
   }
-  .stat {
-    background: var(--card); border: 1px solid var(--line);
-    border-radius: 12px; padding: 14px 16px;
+  .hero::after {
+    content: "";
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.18), transparent 70%);
   }
-  .stat .k { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
-  .stat .v { font-size: 22px; font-weight: 700; margin-top: 4px; color: var(--acc); }
+  .hero .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 999px;
+    font-size: 12px;
+    letter-spacing: .04em;
+  }
+  .hero h1 { margin: 10px 0 6px; font-size: 26px; font-weight: 700; }
+  .hero .subtitle { opacity: .9; font-size: 14px; }
+  .hero .overall {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 12px;
+    font-size: 14px;
+  }
+  .themes {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .themes .chip {
+    padding: 4px 10px;
+    background: #fff;
+    color: var(--brand-2);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
 
-  /* tab */
+  /* 统计卡 */
+  .stats {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+  }
+  .stat-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+  }
+  .stat-card .label { font-size: 12px; color: var(--text-3); letter-spacing: .04em; }
+  .stat-card .value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--brand-2);
+    margin-top: 4px;
+  }
+  .stat-card .sub { color: var(--text-2); font-size: 12px; margin-top: 4px; }
+
+  /* 销售今日动作 */
+  .actions-panel {
+    margin-top: 24px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .actions-panel h2 { margin: 0 0 10px; font-size: 17px; color: var(--brand-2); }
+  .actions-panel ul { margin: 0; padding-left: 18px; color: var(--text); }
+  .actions-panel li { margin-bottom: 6px; font-size: 14px; }
+
+  /* Tab */
   .tabs {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;
+    margin-top: 26px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
   }
   .tab {
-    padding: 8px 16px; background: var(--card); border: 1px solid var(--line);
-    color: var(--muted); border-radius: 999px; cursor: pointer;
-    font-size: 14px; user-select: none;
+    padding: 10px 18px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-2);
+    transition: all .15s ease;
   }
-  .tab .badge { background: var(--card2); color: var(--acc); padding: 1px 8px;
-    border-radius: 999px; margin-left: 6px; font-size: 11px; font-weight: 700; }
-  .tab.on { background: var(--acc); color: #fff; border-color: var(--acc); }
-  .tab.on .badge { background: rgba(255,255,255,.2); color: #fff; }
+  .tab:hover { color: var(--brand-2); }
+  .tab.active { background: var(--brand); color: #fff; border-color: var(--brand); }
 
-  /* 分赛道德内容 */
-  .sec-card {
-    background: var(--card); border: 1px solid var(--line);
-    border-radius: 14px; padding: 20px 22px; margin-bottom: 18px;
+  .tab-panel {
+    display: none;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 0 0 14px 14px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+    animation: fade .2s ease;
   }
-  .sec-situation {
-    font-size: 15px; line-height: 1.8; color: var(--txt);
-    background: var(--card2); border-left: 3px solid var(--acc2);
-    padding: 12px 14px; border-radius: 8px; margin-bottom: 16px;
+  .tab-panel.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .insight-box {
+    background: linear-gradient(135deg, #eff6ff, #ecfeff);
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid var(--brand);
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #1e3a8a;
+    margin-bottom: 18px;
   }
-  .sec-body { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .sub-h { font-size: 13px; color: var(--acc2); font-weight: 700;
-    margin-bottom: 10px; letter-spacing: 1px; }
-  .list-row { margin-bottom: 14px; }
-  .list-row .sub-h + ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.75; color: var(--txt);}
-  .list-row ul li { margin-bottom: 4px; }
-  .tag-group { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tag {
-    background: var(--card2); color: var(--txt); font-size: 12px;
-    padding: 5px 10px; border-radius: 6px; border: 1px solid var(--line);
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 18px;
   }
-  .tag.c-danger { border-color: #3b2230; color: #ff8a9f; background: #2a1a24; }
-  .tag.c-warn { border-color: #3b3320; color: #ffc983; background: #2a2317; }
-  .tag.c-ok { border-color: #1f3b2e; color: #8de0b2; background: #152921; }
-  .tag.c-info { border-color: #1f2e4b; color: #9bbfef; background: #15233b; }
-
-  .news { list-style: none; padding: 0; margin: 0; font-size: 13.5px; }
-  .news li {
-    padding: 8px 10px; margin-bottom: 6px; background: var(--card2);
-    border-radius: 8px; border: 1px solid var(--line); line-height: 1.55;
+  @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+  .col h3 {
+    font-size: 15px;
+    color: var(--brand-2);
+    margin: 6px 0 10px;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 6px;
   }
-  .news li a { color: var(--txt); text-decoration: none; }
-  .news li a:hover { color: var(--acc); text-decoration: underline; }
-  .news li .meta { color: var(--muted); font-size: 11px; margin-top: 4px; display: block; }
 
-  .chart-box { background: var(--card); border: 1px solid var(--line);
-    border-radius: 14px; padding: 16px 20px 12px; margin-bottom: 18px; height: 320px;}
-  #cTopic { width: 100%; height: 100%; }
-  #wc { width: 100%; height: 220px; }
+  .list-plain { margin: 0; padding-left: 18px; color: var(--text); }
+  .list-plain li { margin-bottom: 6px; font-size: 14px; }
 
-  .actions-box {
-    background: var(--card); border: 1px solid var(--line);
-    border-radius: 14px; padding: 18px 22px; margin-bottom: 18px;
+  /* 标签组 */
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip-tag {
+    background: #eef2ff;
+    color: #3730a3;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    border: 1px solid #c7d2fe;
   }
-  .actions-box h3 { margin: 0 0 10px; font-size: 14px; color: var(--acc2); letter-spacing: 1px; }
-  .actions-box ol { margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.85; color: var(--txt);}
+  .chip-tag.success { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+  .chip-tag.warn    { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+  .chip-tag.danger  { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+  .chip-tag.info    { background: #f0f9ff; color: #075985; border-color: #bae6fd; }
 
-  .loading, .error { text-align: center; padding: 40px; color: var(--muted);}
-  .error { color: var(--danger); }
+  /* 新闻列表 */
+  .news-section {
+    margin-top: 22px;
+    border-top: 1px dashed var(--border);
+    padding-top: 16px;
+  }
+  .news-section h3 { font-size: 15px; color: var(--brand-2); margin: 0 0 10px; }
+  .news-item {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px 10px;
+    margin-bottom: 10px;
+    background: #fff;
+    transition: all .15s ease;
+  }
+  .news-item:hover { border-color: #93c5fd; box-shadow: 0 4px 14px rgba(37, 99, 235, .08); }
+  .news-item .title-row {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+  }
+  .news-item a {
+    color: #1e3a8a; text-decoration: none; font-weight: 600; font-size: 14px; flex: 1;
+  }
+  .news-item a:hover { color: var(--brand); text-decoration: underline; }
+  .news-item .meta { color: var(--text-3); font-size: 12px; margin-top: 4px; }
+  .news-item .suggest-toggle {
+    background: var(--brand); color: #fff; border: none; border-radius: 6px;
+    padding: 4px 10px; font-size: 12px; cursor: pointer; white-space: nowrap;
+  }
+  .news-item .suggest-toggle:hover { background: var(--brand-2); }
+  .news-item .suggest-body {
+    display: none; margin-top: 10px; padding: 10px 12px;
+    background: var(--panel-2); border-radius: 8px;
+    border: 1px dashed #cbd5e1; font-size: 13px;
+  }
+  .news-item .suggest-body.open { display: block; }
+  .news-item .suggest-body .row { margin-bottom: 6px; color: var(--text); }
+  .news-item .suggest-body .row b { color: var(--brand-2); }
 
-  @media (max-width: 820px) {
-    .sec-body { grid-template-columns: 1fr; }
-    .grid-stats { grid-template-columns: repeat(2, 1fr); }
+  /* 状态条 */
+  .footer-meta {
+    margin-top: 28px; text-align: center;
+    color: var(--text-3); font-size: 12px;
+  }
+  .loader {
+    text-align: center; padding: 60px 20px;
+    color: var(--text-3); font-size: 14px;
+  }
+  .loader .spinner {
+    width: 28px; height: 28px;
+    border: 3px solid #e2e8f0; border-top-color: var(--brand);
+    border-radius: 50%; margin: 0 auto 10px;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* 小屏 */
+  @media (max-width: 640px) {
+    .hero { padding: 24px 20px; }
+    .hero h1 { font-size: 20px; }
+    .tab { padding: 8px 12px; font-size: 13px; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>财经日报 · 五大赛道销售运营洞察</h1>
-    <div class="meta" id="fetchedAt">—</div>
-  </header>
-
-  <div id="app">
-    <div class="loading">正在抓取并分析今日财经数据…</div>
+<div class="container">
+  <div id="root">
+    <div class="loader"><div class="spinner"></div>正在加载今日数据…</div>
   </div>
 </div>
 
 <script>
-/* ====== 配置：数据来源 URL ====== */
-const DATA_URL = "https://katherynsun21-sketch.github.io/financial/data/latest.json";
+  // 数据地址：先尝试本地 data/latest.json，再请求 financial 仓库 Pages 上的 JSON
+  const DATA_URLS = [
+    "data/latest.json",
+    "https://katherynsun21-sketch.github.io/financial/data/latest.json"
+  ];
 
-/* ====== 工具 ====== */
-function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
-const PALETTE = ["#5b8cff","#ffb84d","#48bb78","#ed8936","#e53e3e","#9f7aea","#38b2ac"];
-const axisStyle = {
-  axisLine:{lineStyle:{color:"#2b3a5e"}},
-  axisTick:{show:false},
-  axisLabel:{color:"#8a9bc4",fontSize:11},
-  splitLine:{lineStyle:{color:"#1f2b45",type:"dashed"}}
-};
-const charts = [];
+  const SECTORS = ["保险", "银行", "信贷", "财富", "非金"];
+  const SECTOR_COLORS = {
+    "保险": "success", "银行": "info", "信贷": "warn",
+    "财富": "",        "非金": "danger"
+  };
 
-/* ====== 全局缓存当前数据，方便点击 tab 后重绘 ====== */
-let G = null;
-
-/* ====== 入口 ====== */
-async function main(){
-  try {
-    const res = await fetch(DATA_URL + "?_=" + Date.now(), {cache:"no-store"});
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const d = await res.json();
-    G = d;
-    document.getElementById("fetchedAt").innerHTML =
-      "抓取时间：" + esc(d.fetched_at||d.date||"—") +
-      "　｜　总新闻数：<b style='color:var(--acc)'>" + (d.total_items||0) + "</b>" +
-      "　｜　数据源：" + (d.sources_count||0) + " 个";
-    render(d);
-  } catch (e) {
-    document.getElementById("app").innerHTML =
-      "<div class='error'>数据加载失败：" + esc(e.message) +
-      "<br/>请确认 " + esc(DATA_URL) + " 可在浏览器直接访问。</div>";
+  function pick(o, keys, def) {
+    for (const k of keys) {
+      if (o && o[k] !== undefined && o[k] !== null && o[k] !== "") return o[k];
+    }
+    return def;
   }
-}
+  function toArr(x) { return Array.isArray(x) ? x : (x ? [x] : []); }
 
-function render(d){
-  const sa = d.situation_analysis || d.marketing_insights || {};
-  const ss = d.sector_summary || {};
-  const sectorsArr = Object.keys(sa.sectors || ss).filter(s=>s && s.trim());
-  if (!sectorsArr.length){
-    document.getElementById("app").innerHTML = "<div class='error'>数据中没有赛道信息。</div>";
-    return;
+  async function fetchData() {
+    for (const u of DATA_URLS) {
+      try {
+        const r = await fetch(u);
+        if (r.ok) return await r.json();
+      } catch (e) { /* 继续尝试下一个地址 */ }
+    }
+    throw new Error("无法加载数据");
   }
 
-  const overall = sa.overall_situation || "暂无整体局势描述。";
-  const themes = sa.core_themes || [];
-  const totalItems = d.total_items || 0;
-  const totalCount = sectorsArr.reduce((a,s)=>a+(ss[s]?.count||0),0);
-  const hot = sectorsArr.slice().sort((a,b)=>(ss[b]?.count||0)-(ss[a]?.count||0))[0];
+  function renderHero(d) {
+    const sa = d.situation_analysis || {};
+    const overall = pick(sa, ["overall_situation"], "暂无整体局势说明");
+    const themes = toArr(pick(sa, ["core_themes"], []));
+    const total = pick(d, ["total_items"], 0);
+    const sectorSummary = pick(d, ["sector_summary"], {});
+    const activeSectors = SECTORS.filter(s => (sectorSummary[s] || {}).count > 0).length;
+    const srcCount = pick(d, ["sources_count"], 0);
+    const fetchedAt = pick(d, ["fetched_at"], "");
+    const dateLabel = pick(d, ["date"], "") || (fetchedAt ? fetchedAt.split("T")[0] : "");
+    const timeLabel = pick(d, ["time"], "");
 
-  document.getElementById("app").innerHTML = `
-    <div class="insight-overall">
-      <div class="lbl">今日概览</div>
-      <p>${esc(overall)}</p>
-      ${themes.length?`<div class="themes">核心主题：${themes.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
-    </div>
+    const statCards = [
+      { label: "抓取新闻数", value: total, sub: `来自 ${srcCount} 个来源` },
+      { label: "覆盖赛道",   value: activeSectors + " / 5", sub: SECTORS.join(" · ") },
+      { label: "数据生成",   value: dateLabel.slice(5) || "--", sub: timeLabel || "" },
+      { label: "建议动作",   value: (sa.sales_today_actions || []).length, sub: "今日销售/运营 To-Do" },
+    ];
 
-    <div class="grid-stats">
-      <div class="stat"><div class="k">TOTAL NEWS</div><div class="v">${totalItems}</div></div>
-      <div class="stat"><div class="k">SECTORS</div><div class="v">${sectorsArr.length}</div></div>
-      <div class="stat"><div class="k">HOT SECTOR</div><div class="v">${esc(hot||"—")}</div></div>
-      <div class="stat"><div class="k">COVERAGE</div><div class="v">${totalCount}</div></div>
-    </div>
-
-    <div class="chart-box"><div class="sub-h" style="margin-bottom:6px">赛道 × 主题 新闻分布</div><div id="cTopic"></div></div>
-
-    <div class="actions-box">
-      <h3>🎯 今日销售/运营建议动作</h3>
-      <ol>${(sa.sales_today_actions||[]).map(a=>`<li>${esc(a)}</li>`).join("")||"<li>暂无建议动作</li>"}</ol>
-    </div>
-
-    <div class="tabs" id="secTabs">
-      ${sectorsArr.map((s,i)=>`
-        <div class="tab ${i===0?'on':''}" data-s="${esc(s)}">
-          ${esc(s)}<span class="badge">${ss[s]?.count||0}</span>
-        </div>`).join("")}
-    </div>
-
-    <div id="secPanel"></div>
-  `;
-
-  document.querySelectorAll("#secTabs .tab").forEach(t=>{
-    t.onclick = ()=>{
-      document.querySelectorAll("#secTabs .tab").forEach(x=>x.classList.remove("on"));
-      t.classList.add("on");
-      drawSector(t.dataset.s);
-    };
-  });
-
-  renderTopicChart(d);
-  drawSector(sectorsArr[0]);
-}
-
-/* ====== 主题分布图 ====== */
-function renderTopicChart(d){
-  const ss = d.sector_summary||{};
-  const sectors = Object.keys(ss);
-  const topicSet = new Set();
-  sectors.forEach(s=>Object.keys(ss[s].topic_counts||{}).forEach(t=>topicSet.add(t)));
-  const topics = [...topicSet];
-  const series = topics.map((t,i)=>({
-    name:t, type:"bar", stack:"total", emphasis:{focus:"series"},
-    itemStyle:{color:PALETTE[i%PALETTE.length]},
-    data: sectors.map(s=>(ss[s].topic_counts||{})[t]||0)
-  }));
-  const c = echarts.init(document.getElementById("cTopic")); charts.push(c);
-  c.setOption({
-    tooltip:{trigger:"axis",axisPointer:{type:"shadow"},
-      backgroundColor:"#121a2e",borderColor:"#1f2b45",textStyle:{color:"#e8eefc"}},
-    legend:{top:0,textStyle:{color:"#8a9bc4"},icon:"roundRect",type:"scroll"},
-    grid:{left:46,right:24,top:40,bottom:18},
-    xAxis:{type:"category",data:sectors,...axisStyle},
-    yAxis:{type:"value",...axisStyle},
-    series
-  });
-  window.addEventListener("resize",()=>charts.forEach(c=>c.resize()));
-}
-
-/* ====== 单个赛道面板 ====== */
-function drawSector(sector){
-  const sa = (G.situation_analysis || G.marketing_insights || {});
-  const secInfo = (sa.sectors || {})[sector] || {};
-  const ss = (G.sector_summary || {})[sector] || {};
-  const bySector = (G.by_sector || {})[sector] || [];
-
-  const insight = secInfo.insight || secInfo.situation || "暂无该赛道局势说明。";
-  const advertisers = secInfo.advertisers || secInfo.target_advertisers || secInfo.customer_segments || [];
-  const products = secInfo.products || secInfo.key_products || [];
-  const contentAngles = secInfo.content_angles || secInfo.suggested_content || [];
-  const compliance = secInfo.compliance_points || secInfo.compliance || [];
-  const risks = secInfo.risk_factors || secInfo.risks || [];
-  const topTitles = ss.top_titles || [];
-  const topNews = (bySector.slice ? bySector.slice(0,8) : []).map(n=>({
-    title:n.title, url:n.url, source:n.source, topic:n.topic_type
-  }));
-
-  const panel = document.getElementById("secPanel");
-  panel.innerHTML = `
-    <div class="sec-card">
-      <div class="sec-situation">${esc(insight)}</div>
-      <div class="sec-body">
-        <div>
-          ${advertisers.length?`
-          <div class="list-row">
-            <div class="sub-h">👥 重点广告主类型</div>
-            <div class="tag-group">${advertisers.map(x=>`<span class="tag c-info">${esc(x)}</span>`).join("")}</div>
-          </div>`:""}
-          ${products.length?`
-          <div class="list-row">
-            <div class="sub-h">📦 主推产品 / 服务</div>
-            <div class="tag-group">${products.map(x=>`<span class="tag c-ok">${esc(x)}</span>`).join("")}</div>
-          </div>`:""}
-          ${contentAngles.length?`
-          <div class="list-row">
-            <div class="sub-h">📝 投放与内容切入点</div>
-            <ul>${contentAngles.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
-          </div>`:""}
-        </div>
-        <div>
-          ${compliance.length?`
-          <div class="list-row">
-            <div class="sub-h">⚠️ 合规关注点</div>
-            <ul>${compliance.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
-          </div>`:""}
-          ${risks.length?`
-          <div class="list-row">
-            <div class="sub-h">🚨 投放风险</div>
-            <ul>${risks.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
-          </div>`:""}
-          ${topNews.length?`
-          <div class="list-row">
-            <div class="sub-h">📰 今日热点新闻</div>
-            <ul class="news">${topNews.map(n=>`<li>${n.url?`<a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title)}</a>`:esc(n.title)}<span class="meta">${esc(n.source||"")}${n.topic?`　｜　主题：${esc(n.topic)}`:""}</span></li>`).join("")}</ul>
-          </div>`:""}
+    return `
+      <div class="hero">
+        <span class="badge">📊 商业化金融 · 销售与运营洞察日报</span>
+        <h1>金融广告销售 &amp; 运营洞察日报</h1>
+        <div class="subtitle">按赛道对当日财经新闻进行分类，并输出对销售/运营可执行的投放建议、合规关注点与风险提示。</div>
+        <div class="overall">${overall}</div>
+        <div class="themes">
+          ${themes.map(t => `<span class="chip"># ${t}</span>`).join("")}
         </div>
       </div>
-    </div>
-  `;
-}
+      <div class="stats">
+        ${statCards.map(s => `
+          <div class="stat-card">
+            <div class="label">${s.label}</div>
+            <div class="value">${s.value}</div>
+            <div class="sub">${s.sub}</div>
+          </div>`).join("")}
+      </div>
+      <div class="actions-panel">
+        <h2>📌 今日销售 / 运营动作建议</h2>
+        <ul>${(sa.sales_today_actions || []).map(a => `<li>${a}</li>`).join("") || "<li>暂无动作建议</li>"}</ul>
+      </div>
+    `;
+  }
 
-main();
+  function renderTabs(d) {
+    const sa = d.situation_analysis || {};
+    const sectorsData = pick(sa, ["sectors"], {});
+    const bySector = pick(d, ["by_sector"], {});
+    const sectorSummary = pick(d, ["sector_summary"], {});
+
+    const tabs = SECTORS.map((s, idx) => {
+      const info = sectorsData[s] || {};
+      const news = toArr(bySector[s]).slice(0, 40);
+      const count = (sectorSummary[s] || {}).count || news.length || 0;
+      const insight = pick(info, ["insight", "situation", "summary"], `${s}赛道暂无当日洞察`);
+      const advertisers = toArr(pick(info, ["advertisers", "target_advertisers"], []));
+      const products = toArr(pick(info, ["products", "main_products"], []));
+      const contentAngles = toArr(pick(info, ["content_angles", "suggested_landing"], []));
+      const compliance = toArr(pick(info, ["compliance_points", "compliance_notes"], []));
+      const risks = toArr(pick(info, ["risk_factors", "risk_notes"], []));
+
+      return `
+        <div class="tab-panel ${idx === 0 ? "active" : ""}" data-sector="${s}">
+          <div class="insight-box">💡 ${insight}</div>
+          <div class="grid-2">
+            <div class="col">
+              <h3>🎯 重点广告主类型</h3>
+              <div class="chip-row">${advertisers.map(x => `<span class="chip-tag ${SECTOR_COLORS[s]}">${x}</span>`).join("") || "<span style='color:#64748b;font-size:13px;'>暂无</span>"}</div>
+
+              <h3 style="margin-top:14px;">💼 主推产品 / 服务</h3>
+              <div class="chip-row">${products.map(x => `<span class="chip-tag success">${x}</span>`).join("") || "<span style='color:#64748b;font-size:13px;'>暂无</span>"}</div>
+
+              <h3 style="margin-top:14px;">📝 投放与内容切入点</h3>
+              <ul class="list-plain">${contentAngles.map(x => `<li>${x}</li>`).join("") || "<li>暂无</li>"}</ul>
+            </div>
+            <div class="col">
+              <h3>⚠️ 合规关注点</h3>
+              <ul class="list-plain">${compliance.map(x => `<li>${x}</li>`).join("") || "<li>暂无</li>"}</ul>
+
+              <h3 style="margin-top:14px;">🚨 投放风险</h3>
+              <ul class="list-plain">${risks.map(x => `<li>${x}</li>`).join("") || "<li>暂无</li>"}</ul>
+
+              <h3 style="margin-top:14px;">📈 赛道当日新闻数</h3>
+              <div class="chip-row"><span class="chip-tag ${SECTOR_COLORS[s]}">${s} · ${count} 条</span></div>
+            </div>
+          </div>
+
+          <div class="news-section">
+            <h3>📰 ${s}赛道 · 当日新闻（附销售建议 · 点击展开）</h3>
+            ${news.length ? news.map((n, i) => renderNewsItem(n, i)).join("")
+              : `<div style="color:#64748b;font-size:13px;padding:10px 4px;">该赛道当日暂无直接相关新闻</div>`}
+          </div>
+        </div>`;
+    }).join("");
+
+    return `
+      <div class="tabs">
+        ${SECTORS.map((s, idx) => {
+          const cnt = ((d.sector_summary || {})[s] || {}).count || 0;
+          return `<div class="tab ${idx === 0 ? "active" : ""}" data-sector="${s}">${s} <span style="opacity:.75;">(${cnt})</span></div>`;
+        }).join("")}
+      </div>
+      ${tabs}
+    `;
+  }
+
+  function renderNewsItem(n, idx) {
+    const title = n.title || "（无标题）";
+    const url = n.url || "#";
+    const source = n.source || "";
+    const topic = n.topic_type || "一般资讯";
+    const confidence = n.confidence || 0;
+    const sug = n.item_suggestions || {};
+    const sAdvertisers = sug.suggested_advertisers || "";
+    const sActions = toArr(sug.suggested_actions);
+    const sCompliance = toArr(sug.compliance_notes);
+    const sRisks = toArr(sug.risk_notes);
+
+    const isRisk = sRisks.some(x => /违约|逾期|处罚|负面|暴雷|投诉|纠纷|举报/.test(x));
+    const isCompliance = sCompliance.some(x => /合规|审查|暂停|处罚/.test(x));
+
+    return `
+      <div class="news-item">
+        <div class="title-row">
+          <a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a>
+          <button class="suggest-toggle" onclick="toggleSuggest(this)">展开建议</button>
+        </div>
+        <div class="meta">
+          <span class="chip-tag info" style="margin-right:6px;">${topic}</span>
+          ${source ? `<span class="chip-tag" style="margin-right:6px;">${source}</span>` : ""}
+          ${confidence ? `<span style="margin-right:8px;">置信度 ${(confidence * 100).toFixed(0)}%</span>` : ""}
+          ${isCompliance ? `<span class="chip-tag warn" style="margin-right:6px;">⚠️ 含合规信号</span>` : ""}
+          ${isRisk ? `<span class="chip-tag danger">🚨 含风险信号</span>` : ""}
+        </div>
+        <div class="suggest-body">
+          ${sAdvertisers ? `<div class="row"><b>可能感兴趣的广告主：</b>${sAdvertisers}</div>` : ""}
+          ${sActions.length ? `<div class="row"><b>销售 / 运营可执行动作：</b></div><ul class="list-plain">${sActions.map(a => `<li>${a}</li>`).join("")}</ul>` : ""}
+          ${sCompliance.length ? `<div class="row" style="margin-top:8px;"><b>合规关注点：</b></div><ul class="list-plain">${sCompliance.map(a => `<li>${a}</li>`).join("")}</ul>` : ""}
+          ${sRisks.length ? `<div class="row" style="margin-top:8px;"><b>投放风险：</b></div><ul class="list-plain">${sRisks.map(a => `<li>${a}</li>`).join("")}</ul>` : ""}
+        </div>
+      </div>`;
+  }
+
+  window.toggleSuggest = function (btn) {
+    const body = btn.closest(".news-item").querySelector(".suggest-body");
+    const open = body.classList.toggle("open");
+    btn.textContent = open ? "收起建议" : "展开建议";
+  };
+
+  function setupTabs() {
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        const sec = tab.dataset.sector;
+        document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t === tab));
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.dataset.sector === sec));
+      });
+    });
+  }
+
+  async function main() {
+    const root = document.getElementById("root");
+    try {
+      const d = await fetchData();
+      const meta = `
+        <div class="footer-meta">
+          数据来源：东方财富 / 财联社 / 第一财经 / 21财经 / 证券时报 / 每日经济新闻 / 新浪财经 / 央行 / 金融监管总局 / 证监会 / 财政部 / 外汇局 等 ·
+          分类方式：关键词规则 + 可扩展 LLM 二次筛选 · 本页仅作为销售与运营内部话题参考
+        </div>`;
+      root.innerHTML = renderHero(d) + renderTabs(d) + meta;
+      setupTabs();
+    } catch (e) {
+      root.innerHTML = `<div class="loader">⚠️ 数据加载失败：${e.message}<br/><br/>请确认 <code>https://katherynsun21-sketch.github.io/financial/data/latest.json</code> 可访问，并打开浏览器控制台查看详情。</div>`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", main);
 </script>
 </body>
 </html>
